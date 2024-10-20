@@ -4,6 +4,8 @@
 
 #include "ll/api/mod/RegisterHelper.h"
 
+#include "NetherReactor.h"
+
 namespace my_mod {
 
 static std::unique_ptr<MyMod> instance;
@@ -18,15 +20,20 @@ bool MyMod::load() {
 
 bool MyMod::enable() {
     getSelf().getLogger().debug("Enabling...");
-    // Code for enabling the mod goes here.
+
+    nr::NetherReactor::getInstance().init();
+
     return true;
 }
 
 bool MyMod::disable() {
     getSelf().getLogger().debug("Disabling...");
-    // Code for disabling the mod goes here.
+
+    nr::NetherReactor::getInstance().release();
+
     return true;
 }
+bool MyMod::unload() { return true; }
 
 } // namespace my_mod
 
