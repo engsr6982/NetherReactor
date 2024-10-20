@@ -1,4 +1,6 @@
 #pragma once
+#include "mc/world/actor/player/Player.h"
+#include "mc/world/level/BlockPos.h"
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -21,13 +23,15 @@ public:
     void init();
     void release();
 
+    // 辅助函数
+    bool checkStructure(Player& player, BlockPos const& pos); // 检查结构
 
-    void _initRecipe();
-
-
-    string const RECIPE_ID                 = "NetherReactor:reactor";     // 合成表ID
-    string const MINECRAFT_NETHER_REACTOR  = "minecraft:netherreactor";   // 下届反应核
-    string const MINECRAFT_GLOWINGOBSIDIAN = "minecraft:glowingobsidian"; // 发光黑曜石
+    // 常量
+    string const RecipeID                  = "NetherReactor:reactor";     // 合成表ID
+    string const Minecraft_NetherReactor   = "minecraft:netherreactor";   // 下届反应核
+    string const Minecraft_GlowingObsidian = "minecraft:glowingobsidian"; // 发光黑曜石
+    string const Minecraft_GoldBlock       = "minecraft:gold_block";      // 金块
+    string const Minecraft_CobbleStone     = "minecraft:cobblestone";     // 圆石
 
     // 下界反应核合成表
     //   铁锭 钻石 铁锭
