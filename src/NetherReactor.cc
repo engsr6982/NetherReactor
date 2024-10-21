@@ -17,7 +17,8 @@ string NetherReactor::formatID(const BlockPos& pos, int dimensionId) {
     return std::to_string(dimensionId) + pos.toString();
 }
 
-NetherReactor::operator string() const { return NetherReactor::formatID(mPos, mDimensionId); }
+NetherReactor::operator string() const { return getID(); }
+string NetherReactor::getID() const { return NetherReactor::formatID(mPos, mDimensionId); }
 
 bool NetherReactor::isCorrectPattern() const {
     auto level = ll::service::getLevel()->getDimension(mDimensionId);

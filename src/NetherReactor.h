@@ -24,7 +24,7 @@ public:
     short       mState;         // 状态(0: 默认, 1: 激活, 2: 耗尽)
 
     NetherReactor(BlockPos const& pos, int dimensionId) : mPos(pos), mDimensionId(dimensionId) {}
-    ~NetherReactor();
+    // ~NetherReactor();
 
     bool isRaw() const;              // 是否为默认状态
     bool isActive() const;           // 是否激活
@@ -47,6 +47,7 @@ public:
     BlockPos const& getPos() const;           // 获取位置
     Block*          getBlock() const;         // 获取方块
     int             getDimensionId() const;   // 获取维度ID
+    string          getID() const;            // 获取ID
 
     void tick();
 
@@ -75,14 +76,6 @@ public:
     static string const Minecraft_GlowingObsidian; // 发光黑曜石
     static string const Minecraft_GoldBlock;       // 金块
     static string const Minecraft_CobbleStone;     // 圆石
-
-
-private:
-    NetherReactor()                                = delete;
-    NetherReactor(NetherReactor&&)                 = delete;
-    NetherReactor(const NetherReactor&)            = delete;
-    NetherReactor& operator=(NetherReactor&&)      = delete;
-    NetherReactor& operator=(const NetherReactor&) = delete;
 };
 
 } // namespace nr

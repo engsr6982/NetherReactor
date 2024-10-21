@@ -67,7 +67,7 @@ bool NetherReactorManager::addReactor(NetherReactor reactor) {
     if (hasReactor(reactor)) {
         return false;
     }
-    mReactors.emplace(reactor, reactor);
+    mReactors.emplace(reactor, std::move(reactor));
     return true;
 }
 bool NetherReactorManager::removeReactor(string const& ID) {
