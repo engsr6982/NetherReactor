@@ -4,7 +4,7 @@
 
 #include "ll/api/mod/RegisterHelper.h"
 
-#include "NetherReactor.h"
+#include "NetherReactorManager.h"
 
 namespace my_mod {
 
@@ -21,7 +21,7 @@ bool MyMod::load() {
 bool MyMod::enable() {
     getSelf().getLogger().debug("Enabling...");
 
-    nr::NetherReactor::getInstance().init();
+    nr::NetherReactorManager::getInstance().init();
 
     return true;
 }
@@ -29,7 +29,7 @@ bool MyMod::enable() {
 bool MyMod::disable() {
     getSelf().getLogger().debug("Disabling...");
 
-    nr::NetherReactor::getInstance().release();
+    nr::NetherReactorManager::getInstance().release();
 
     return true;
 }

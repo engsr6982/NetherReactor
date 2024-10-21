@@ -1,4 +1,4 @@
-#include "NetherReactor.h"
+#include "NetherReactorManager.h"
 #include "gmlib/mod/recipe/CustomRecipe.h"
 #include "ll/api/event/EventBus.h"
 #include "ll/api/event/ListenerBase.h"
@@ -10,18 +10,18 @@
 ll::event::ListenerPtr PLAYER_INTERACT_BLOCK_LISTENER;
 
 namespace nr {
-NetherReactor& NetherReactor::getInstance() {
-    static NetherReactor instance;
+NetherReactorManager& NetherReactorManager::getInstance() {
+    static NetherReactorManager instance;
     return instance;
 }
 
-void NetherReactor::init() {
+void NetherReactorManager::init() {
     // 注册自定义配方
     gmlib::mod::recipe::RecipeRegistry::registerShapedCraftingTableRecipe(
         RecipeID,
         MINECRAFT_NETHER_REACTOR_RECIPE_shape,
         MINECRAFT_NETHER_REACTOR_RECIPE_ingredients,
-        Minecraft_NetherReactor,
+        Minecraft_NetherReactorManager,
         1
     );
 
@@ -31,7 +31,7 @@ void NetherReactor::init() {
             [this](ll::event::PlayerInteractBlockEvent& ev) {
                 auto bl = ev.block(); // 获取玩家点击的方块
                 if (bl.has_value()) {
-                    if (bl->getTypeName() == Minecraft_NetherReactor) {
+                    if (bl->getTypeName() == Minecraft_NetherReactorManager) {
                         BlockPos const& pos = ev.blockPos();  // 获取玩家点击的方块位置
                         this->checkStructure(ev.self(), pos); // 检查结构
                     }
@@ -40,7 +40,7 @@ void NetherReactor::init() {
         );
 }
 
-void NetherReactor::release() {
+void NetherReactorManager::release() {
     // 卸载自定义配方
     gmlib::mod::recipe::RecipeRegistry::unregisterRecipe(RecipeID);
 
@@ -49,7 +49,7 @@ void NetherReactor::release() {
 }
 
 
-bool NetherReactor::checkStructure(Player& player, BlockPos const& pos) {
+bool NetherReactorManager::checkStructure(Player& player, BlockPos const& pos) {
     static string const msg     = "Not the correct pattern!";                         // 错误信息
     static string const pos_msg = "The nether reactor needs to be built lower down."; // 位置错误信息
     if (pos.y > 90) {
@@ -63,8 +63,8 @@ bool NetherReactor::checkStructure(Player& player, BlockPos const& pos) {
 
     auto& bs = player.getDimensionBlockSource(); // 获取玩家所在世界的方块源
 
-    // 中心方块为NetherReactor
-    if (bs.getBlock(pos).getTypeName() != Minecraft_NetherReactor) {
+    // 中心方块为NetherReactorManager
+    if (bs.getBlock(pos).getTypeName() != Minecraft_NetherReactorManager) {
         player.sendMessage(msg);
         return false;
     }
