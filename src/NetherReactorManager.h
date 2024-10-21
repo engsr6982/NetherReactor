@@ -1,7 +1,7 @@
 #pragma once
+#include "NetherReactor.h"
 #include "mc/world/actor/player/Player.h"
 #include "mc/world/level/BlockPos.h"
-#include "mc/world/level/block/Block.h"
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -10,6 +10,7 @@
 namespace nr {
 
 using string = std::string;
+
 
 class NetherReactorManager {
 public:
@@ -21,28 +22,29 @@ public:
 
     static NetherReactorManager& getInstance();
 
+    std::unordered_map<string, NetherReactor> mReactors; // 下界反应核
+
     void init();
     void release();
 
-    // 辅助函数
-    bool checkStructure(Player& player, BlockPos const& pos); // 检查结构
 
-    // 常量
-    string const RecipeID                       = "NetherReactorManager:reactor";   // 合成表ID
-    string const Minecraft_NetherReactorManager = "minecraft:NetherReactorManager"; // 下届反应核
-    string const Minecraft_GlowingObsidian      = "minecraft:glowingobsidian";      // 发光黑曜石
-    string const Minecraft_GoldBlock            = "minecraft:gold_block";           // 金块
-    string const Minecraft_CobbleStone          = "minecraft:cobblestone";          // 圆石
+    bool hasReactor(string const& ID) const;
+    bool hasReactor(BlockPos const& pos, int dimensionId) const;
+
+    NetherReactor* getReactor(string const& ID);
+    NetherReactor* getReactor(BlockPos const& pos, int dimensionId);
+
+    bool addReactor(NetherReactor reactor);
+    bool removeReactor(string const& ID);
+    bool removeReactor(BlockPos const& pos, int dimensionId);
 
     // 下界反应核合成表
     //   铁锭 钻石 铁锭
     //   铁锭 钻石 铁锭
     //   铁锭 钻石 铁锭
-    std::vector<string> const MINECRAFT_NETHER_REACTOR_RECIPE_shape       = {"ABA", "ABA", "ABA"};
-    std::vector<string> const MINECRAFT_NETHER_REACTOR_RECIPE_ingredients = {
-        "minecraft:iron_ingot",
-        "minecraft:diamond"
-    };
+    string const              Recipe_NetherRector_ID          = "NetherReactorManager:reactor"; // 合成表ID
+    std::vector<string> const Recipe_NetherRector_Shape       = {"ABA", "ABA", "ABA"};
+    std::vector<string> const Recipe_NetherRector_Ingredients = {"minecraft:iron_ingot", "minecraft:diamond"};
 };
 
 
