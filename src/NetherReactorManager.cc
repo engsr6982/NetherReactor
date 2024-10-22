@@ -1,14 +1,18 @@
 #include "NetherReactorManager.h"
 #include "NetherReactor.h"
 #include "gmlib/mod/recipe/CustomRecipe.h"
+#include "ll/api/chrono/GameChrono.h"
 #include "ll/api/event/EventBus.h"
 #include "ll/api/event/ListenerBase.h"
 #include "ll/api/event/player/PlayerInteractBlockEvent.h"
+#include "ll/api/schedule/Scheduler.h"
+#include "ll/api/schedule/Task.h"
 #include "ll/api/service/Bedrock.h"
 #include "mc/world/level/BlockSource.h"
 
 
-ll::event::ListenerPtr LISTENER_PlayerInteractBlock;
+ll::event::ListenerPtr          LISTENER_PlayerInteractBlock;
+ll::schedule::GameTickScheduler TICK_Scheduler;
 
 namespace nr {
 NetherReactorManager& NetherReactorManager::getInstance() {
@@ -35,10 +39,19 @@ void NetherReactorManager::init() {
                         addReactor(NetherReactor(ev.blockPos(), ev.self().getDimensionId())); // 创建反应堆
                     }
 
-                    // TODO: 检查是否可以启动反应堆
+                    auto reactor = getReactor(ev.blockPos(), ev.self().getDimensionId());
+                    if (reactor) {
+                        reactor->activate(ev.self());
+                    }
                 }
             }
         );
+
+    TICK_Scheduler.add<ll::schedule::RepeatTask>(ll::chrono::ticks(1), [this]() {
+        for (auto& reactor : mReactors) {
+
+        }
+    });
 }
 
 void NetherReactorManager::release() {
