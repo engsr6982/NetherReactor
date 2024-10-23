@@ -2,6 +2,7 @@
 #include "NetherReactor.h"
 #include "mc/world/actor/player/Player.h"
 #include "mc/world/level/BlockPos.h"
+#include <ctime>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -22,7 +23,8 @@ public:
 
     static NetherReactorManager& getInstance();
 
-    std::unordered_map<string, NetherReactor> mReactors; // 下界反应核
+    std::unordered_map<string, time_t>        mClickEventStabilization; // 点击事件防抖
+    std::unordered_map<string, NetherReactor> mReactors;                // 下界反应核
 
     void init();
     void release();
@@ -44,7 +46,10 @@ public:
     //   铁锭 钻石 铁锭
     string const              Recipe_NetherRector_ID          = "NetherReactorManager:reactor"; // 合成表ID
     std::vector<string> const Recipe_NetherRector_Shape       = {"ABA", "ABA", "ABA"};
-    std::vector<string> const Recipe_NetherRector_Ingredients = {"minecraft:iron_ingot", "minecraft:diamond"};
+    std::vector<string> const Recipe_NetherRector_Ingredients = {
+        NetherReactor::Minecraft_IronIngot,
+        NetherReactor::Minecraft_Diamond
+    };
 };
 
 

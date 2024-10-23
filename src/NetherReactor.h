@@ -1,6 +1,7 @@
 #pragma once
 #include "mc/world/actor/player/Player.h"
 #include "mc/world/level/BlockPos.h"
+#include "mc/world/level/BlockSource.h"
 #include "mc/world/level/block/Block.h"
 #include <ctime>
 #include <string>
@@ -16,6 +17,10 @@ public:
     // 基础结构
     BlockPos mPos;         // 下界反应核位置
     int      mDimensionId; // 维度ID
+
+    bool  mIsActive;   // 是否激活
+    bool  mIsDepleted; // 是否耗尽
+    short mProgress;   // 计时器
 
     NetherReactor(BlockPos const& pos, int dimensionId) : mPos(pos), mDimensionId(dimensionId) {}
     // ~NetherReactor();
@@ -54,19 +59,28 @@ public:
 
     void _crumblingNetherTower() const; // 下界塔破损(耗尽后)
 
-    void _refreshBlock() const; // 刷新方块
-
 
     // static
     static bool isAdjacent(NetherReactor const& reactor1, NetherReactor const& reactor2); // 是否相邻
 
     static string formatID(BlockPos const& pos, int dimensionId); // 格式化ID
 
+    static bool isPointInReactor(BlockPos const& pos, BlockPos const& reactorpos); // 点是否在反应核内
+
+    static int RandomInt(int min, int max); // 随机整数
+
     static string const Minecraft_NetherReactor;   // 下届反应核
     static string const Minecraft_GlowingObsidian; // 发光黑曜石
     static string const Minecraft_GoldBlock;       // 金块
     static string const Minecraft_CobbleStone;     // 圆石
-    static short const  REACTOR_MAX_TICK = 900;    // 最大激活时间(900刻 = 45秒)
+    static string const Minecraft_IronIngot;       // 铁锭
+    static string const Minecraft_Diamond;         // 钻石
+    static string const Minecraft_NetherRock;      // 下界岩
+    static string const Minecraft_Obsidian;        // 黑曜石
+
+    static short const REACTOR_MAX_TICK     = 900; // 最大激活时间(900刻 = 45秒)
+    static int const   REACTOR_TOWER_OFFSET = 8;   // 下界塔偏移(+-8)
+    static int const   REACTOR_TOWER_HEIGHT = 35;  // 下界塔高度
 };
 
 } // namespace nr

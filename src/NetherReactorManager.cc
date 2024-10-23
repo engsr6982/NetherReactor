@@ -33,6 +33,20 @@ void NetherReactorManager::init() {
     LISTENER_PlayerInteractBlock =
         ll::event::EventBus::getInstance().emplaceListener<ll::event::PlayerInteractBlockEvent>(
             [this](ll::event::PlayerInteractBlockEvent& ev) {
+                auto& player = ev.self();
+
+                // 防抖
+                string const& playerName = player.getRealName();
+                if (!mClickEventStabilization.contains(playerName)) {
+                    std::time_t future                   = std::time(nullptr) + 30;
+                    mClickEventStabilization[playerName] = future;
+                }
+                std::time_t now  = std::time(nullptr);
+                auto        last = mClickEventStabilization[playerName];
+                if (now < last) {
+                    return;
+                }
+
                 auto bl = ev.block();
                 if (bl && bl->getTypeName() == NetherReactor::Minecraft_NetherReactor) {
                     if (!hasReactor(ev.blockPos(), ev.self().getDimensionId())) {
@@ -49,7 +63,13 @@ void NetherReactorManager::init() {
 
     TICK_Scheduler.add<ll::schedule::RepeatTask>(ll::chrono::ticks(1), [this]() {
         for (auto& reactor : mReactors) {
-
+            auto& sec = reactor.second;
+            sec.tick();
+            if (sec.isDepleted()) {
+                sec._replaceWithObsidian();
+                sec._crumblingNetherTower();
+                removeReactor(sec); // 移除反应堆
+            }
         }
     });
 }
