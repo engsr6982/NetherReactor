@@ -112,8 +112,8 @@ void NetherReactor::activate(Player& player) {
     mIsActive = true;
 
     // 更新状态
-    _replaceWithGlowingObsidian(); // 替换为发光黑曜石
     _generateNetherTower();        // 生成地狱塔
+    _replaceWithGlowingObsidian(); // 替换为发光黑曜石
 
     tick();
 
