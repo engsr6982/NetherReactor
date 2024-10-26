@@ -2,8 +2,11 @@
 #include "NetherReactor.h"
 #include "mc/world/actor/player/Player.h"
 #include "mc/world/level/BlockPos.h"
+#include "mc/world/level/levelgen/structure/StructureTemplate.h"
 #include <ctime>
+#include <memory>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 #include <vector>
 
@@ -20,6 +23,9 @@ public:
     NetherReactorManager(const NetherReactorManager&)            = delete;
     NetherReactorManager& operator=(NetherReactorManager&&)      = delete;
     NetherReactorManager& operator=(const NetherReactorManager&) = delete;
+
+    static std::string_view const             NetherTowerFilePath;
+    static std::unique_ptr<StructureTemplate> mReactorTowerTemplate;
 
     static NetherReactorManager& getInstance();
 

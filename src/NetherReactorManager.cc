@@ -15,7 +15,9 @@ ll::event::ListenerPtr          LISTENER_PlayerInteractBlock;
 ll::schedule::GameTickScheduler TICK_Scheduler;
 
 namespace nr {
-NetherReactorManager& NetherReactorManager::getInstance() {
+std::string_view const             NetherReactorManager::NetherTowerFilePath = "structure/NetherTower.nbt";
+std::unique_ptr<StructureTemplate> NetherReactorManager::mReactorTowerTemplate;
+NetherReactorManager&              NetherReactorManager::getInstance() {
     static NetherReactorManager instance;
     return instance;
 }
