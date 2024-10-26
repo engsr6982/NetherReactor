@@ -18,9 +18,9 @@ public:
     BlockPos mPos;         // 下界反应核位置
     int      mDimensionId; // 维度ID
 
-    bool  mIsActive;   // 是否激活
-    bool  mIsDepleted; // 是否耗尽
-    short mProgress;   // 计时器
+    bool  mIsActive{false};   // 是否激活
+    bool  mIsDepleted{false}; // 是否耗尽
+    short mProgress{0};       // 进度计时器
 
     NetherReactor(BlockPos const& pos, int dimensionId) : mPos(pos), mDimensionId(dimensionId) {}
     // ~NetherReactor();

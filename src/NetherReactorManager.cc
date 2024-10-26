@@ -52,12 +52,11 @@ void NetherReactorManager::init() {
                 auto bl = ev.block();
                 if (bl && bl->getTypeName() == NetherReactor::Minecraft_NetherReactor) {
                     if (!hasReactor(ev.blockPos(), ev.self().getDimensionId())) {
-                        addReactor(NetherReactor(ev.blockPos(), ev.self().getDimensionId())); // 创建反应堆
-                    }
-
-                    auto reactor = getReactor(ev.blockPos(), ev.self().getDimensionId());
-                    if (reactor) {
-                        reactor->activate(ev.self());
+                        NetherReactor tempReactor(ev.blockPos(), ev.self().getDimensionId());
+                        if (tempReactor.canBeActivated()) {
+                            addReactor(tempReactor); // 创建反应堆
+                            getReactor(ev.blockPos(), ev.self().getDimensionId())->activate(ev.self());
+                        }
                     }
                 }
             }

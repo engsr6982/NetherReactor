@@ -1,4 +1,5 @@
 #include "NetherReactor.h"
+#include "NetherReactorManager.h"
 #include "gmlib/world/Level.h"
 #include "ll/api/service/Bedrock.h"
 #include "mc/enums/BlockUpdateFlag.h"
@@ -169,8 +170,10 @@ void NetherReactor::tick() {
 
 // private:
 void NetherReactor::_generateNetherTower() const {
-    Block const& bl = Block::tryGetFromRegistry(Minecraft_NetherRock);
-    // todo:
+    NetherReactorManager::mReactorTowerTemplate->placeInWorld(
+        ll::service::getLevel()->getDimension(mDimensionId)->getBlockSourceFromMainChunkSource(),
+        BlockPos(mPos.x - NetherReactor::REACTOR_TOWER_OFFSET, mPos.y - 2, mPos.z - NetherReactor::REACTOR_TOWER_OFFSET)
+    );
 }
 
 void NetherReactor::_spawnItems() const {}
